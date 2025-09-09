@@ -3,14 +3,14 @@ services:
     image: mysql:latest
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: chattingo@123
-      MYSQL_DATABASE: chattingoDB
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
       - chattingo-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pchattingo@123"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,16 +23,18 @@ services:
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      SPRING_PROFILES_ACTIVE: 'production'
       SERVER_PORT: ${SERVER_PORT}
       JWT_SECRET: ${JWT_SECRET}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      CORS_ALLOWED_ORIGINS: 'http://http://72.60.111.1:3000'
       CORS_ALLOWED_METHODS: 'GET,POST,PUT,DELETE,OPTIONS,PATCH'
       CORS_ALLOWED_HEADERS: '*'
-      WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
+      WEBSOCKET_ENDPOINT: '/ws'
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     depends_on:
       mysql:
         condition: service_healthy
@@ -54,8 +56,8 @@ services:
     environment:
       REACT_APP_API_URL: ${REACT_APP_API_URL}
       REACT_APP_WS_URL: ${REACT_APP_WS_URL}
-      REACT_APP_ENV: ${REACT_APP_ENV}
-      REACT_APP_DEBUG: ${REACT_APP_DEBUG}
+      REACT_APP_ENV: 'production'
+      REACT_APP_DEBUG: 'true'
     depends_on:
       - backend
     networks:
