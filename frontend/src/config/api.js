@@ -7,7 +7,7 @@ const deriveDefaultApiBaseUrl = () => {
     const { protocol, hostname } = window.location;
     const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
     if (!isLocalhost && hostname) {
-      const scheme = protocol === "https:" ? "https:" : "http:";
+      const scheme = protocol === "https:" ? "https" : "http";
       return `${scheme}//${hostname}:8080`;
     }
   } catch (_) {
