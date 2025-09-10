@@ -1,0 +1,63 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    env_file:
+      - ./backend/.env
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - chattingo-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pchattingo@123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+
+  backend:
+    image: dattarahegaonkar09/hackthon-chattingo-app_backend:latest
+    container_name: backend
+    ports:
+      - "8081:8081"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - chattingo-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  frontend:
+    image: dattarahegaonkar09/hackthon-chattingo-app_frontend:latest
+    container_name: frontend
+    ports:
+      - "3000:80"   # change to "3000:3000" if using React dev server
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
+    networks:
+      - chattingo-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  mysql-data:
+
+networks:
+  chattingo-network:
+    external: true
