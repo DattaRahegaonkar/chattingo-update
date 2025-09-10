@@ -141,31 +141,49 @@ The Nginx configuration provides:
 - `/ws/*` → WebSocket connections
 - `/.well-known/acme-challenge/*` → SSL certificate validation
 
-## 🔐 SSL Certificate Management
-
-### Automatic Renewal
-```bash
-# Add to crontab for automatic renewal
-0 12 * * * /path/to/project/ssl.sh
-```
-
-### Manual Renewal
-```bash
-docker-compose run --rm certbot renew
-docker-compose exec nginx nginx -s reload
-```
-
 ## 🚀 Jenkins CI/CD Pipeline
 
-The Jenkins pipeline automates:
-
-1. **Workspace Cleanup**
-2. **Code Checkout** from GitHub
-3. **Backend Build** with Maven
-4. **Frontend Build** with npm
-5. **Docker Image Creation**
-6. **Container Deployment**
-7. **Health Checks**
+```
+pipeline {
+    agent any
+    
+    stages {
+        stage('Clean workspace') { 
+            // Clean workspace fromt the workspace directory
+        }         
+        stage('Git Clone') { 
+            // Clone repository from GitHub
+        }
+         stage('Creating .env files') { 
+            // Environment variables
+        }
+         stage('OWASP Dependency Check') { 
+            // to check the vulernabilities
+        }
+        stage('Filesystem Scan') { 
+            // Security scan of source code 
+        }
+        stage('Images Building') { 
+            // Build Docker images for frontend & backend
+        }
+        stage('Images Scanning') { 
+            // Vulnerability scan of Docker images
+        }
+        stage('Push to Registry') { 
+            // Push images to Docker Hub/Registry 
+        }
+        stage('Update Compose') { 
+            // Update docker-compose with new image tags
+        }
+        stage('Deploy') { 
+            // Deploy to Hostinger VPS
+        }
+    }
+    stage('Post Declaration') {
+         // storing the artifacts in jenkins
+    }         
+}
+```
 
 ### Pipeline Configuration
 ```groovy
@@ -176,10 +194,9 @@ The Jenkins pipeline automates:
 ```
 
 ### Setup Jenkins Pipeline
-1. Create new Pipeline job
+1. Create Pipeline job
 2. Configure GitHub webhook
-3. Set pipeline script from SCM
-4. Configure shared library if used
+3. Configured Jenkins Shared Library
 
 ## 📊 Monitoring & Health Checks
 
@@ -267,21 +284,6 @@ curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" http://localhost/ws
 - `GET /api/chats` - Get user chats
 - `POST /api/chats` - Create new chat
 - `GET /api/chats/{id}/messages` - Get chat messages
-
-### WebSocket Endpoints
-- `/ws` - WebSocket connection for real-time messaging
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
