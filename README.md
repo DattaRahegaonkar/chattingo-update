@@ -190,7 +190,7 @@ pipeline {
 // Jenkinsfile includes shared library usage
 @Library('shared-library') _
 
-// Stages: Clean → Clone → Build → Test → Deploy
+// Stages: Clean → Clone → Build → Scan → Deploy
 ```
 
 ### Setup Jenkins Pipeline
