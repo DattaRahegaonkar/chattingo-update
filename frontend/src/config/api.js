@@ -8,7 +8,7 @@ const deriveDefaultApiBaseUrl = () => {
     const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
     if (!isLocalhost && hostname) {
       const scheme = protocol === "https:" ? "https" : "http";
-      return `${scheme}//${hostname}:8080`;
+      return `${scheme}//${hostname}`;
     }
   } catch (_) {
     // window not available (e.g., tests) – ignore and use fallback
@@ -20,4 +20,7 @@ export const BASE_API_URL =
   process.env.REACT_APP_API_URL && process.env.REACT_APP_API_URL.trim() !== ""
     ? process.env.REACT_APP_API_URL
     : deriveDefaultApiBaseUrl();
+
+// WebSocket URL - ensure proper protocol handling
+export const WS_URL = BASE_API_URL.replace(/^http/, 'ws');
 

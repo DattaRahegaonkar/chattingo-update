@@ -28,7 +28,10 @@ services:
       - chattingo-network
 
   web:
-    image: dattarahegaonkar09/hackthon-chattingo-app_frontend:latest
+    build: 
+      context: ./frontend
+      args:
+        REACT_APP_API_URL: https://chattingo.rahegaonkar.site
     container_name: frontend
     depends_on:
       - appservice

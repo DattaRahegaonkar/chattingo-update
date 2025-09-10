@@ -58,9 +58,25 @@ export const getUsersChat = (chatData) => async (dispatch) => {
 
     let data = [];
     try {
+      // Check if response is ok and content-type is JSON
+      if (!res.ok) {
+        console.error(`API Error: ${res.status} ${res.statusText}`);
+        const text = await res.text();
+        console.error("Response body:", text);
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+      
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error("Response is not JSON, content-type:", contentType);
+        const text = await res.text();
+        console.error("Response body:", text);
+        throw new Error("Invalid response format");
+      }
+      
       data = await res.json();
     } catch (e) {
-      console.log("Failed to parse response as JSON");
+      console.log("Failed to parse response as JSON:", e.message);
     }
     
     console.log("get users chat ", data);
