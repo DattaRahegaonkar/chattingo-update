@@ -11,7 +11,15 @@ A full-stack real-time chat application built with Spring Boot backend and React
 - **Containerization**: Docker & Docker Compose
 - **CI/CD**: Jenkins Pipeline
 - **SSL**: Let's Encrypt certificates via Certbot
-
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   Database      │
+│   (React)       │◄──►│   (Spring Boot) │◄──►│   (MySQL)       │
+│   Port: 80      │    │   Port: 8080    │    │   Port: 3306    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │
+         └────── WebSocket ──────┘
+```
 ## 📋 Prerequisites
 
 - Docker & Docker Compose
