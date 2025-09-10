@@ -275,3 +275,6 @@ curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" http://localhost/ws
 - Material-UI for the component library
 - Let's Encrypt for free SSL certificates
 - Docker for containerization
+
+
+![pipeline](https://github.com/DattaRahegaonkar/chattingo-update/blob/98b60f2cd3b4921f070f0d465adf77cd5e440c09/Screenshot%202025-09-10%20233040.png)
