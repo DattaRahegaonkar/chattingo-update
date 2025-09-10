@@ -218,23 +218,6 @@ curl http://localhost/api/health
 mysqladmin ping -h 127.0.0.1 -u root -p
 ```
 
-## 🔧 Configuration Files
-
-### Environment Variables
-
-**Backend (.env)**
-```env
-MYSQL_ROOT_PASSWORD=yourpassword
-MYSQL_DATABASE=chattingo
-MYSQL_USER=chattingo_user
-MYSQL_PASSWORD=userpassword
-```
-
-**Frontend (.env)**
-```env
-REACT_APP_API_URL=https://yourdomain.com
-```
-
 ### Docker Compose Services
 - `dbservice`: MySQL database
 - `appservice`: Spring Boot backend
